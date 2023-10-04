@@ -1,16 +1,8 @@
-import { useEffect } from 'react';
-import { fetchApiData } from '../api/planetsApi';
-import { PlanetType } from '../types';
+import { useContext } from 'react';
+import DataContext from '../context/DataContext';
 
 export default function Table() {
-  useEffect(() => {
-    async function getCurrency() {
-      const planetsData = await fetchApiData();
-      const { results } = planetsData;
-      console.log(results);
-    }
-    getCurrency();
-  }, []);
+  const { data } = useContext(DataContext);
   return (
     <div>
       <table>
@@ -58,7 +50,23 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          <p>COLOQUE A API AQUI</p>
+          {data && data.map((planet, index) => (
+            <tr key={ index }>
+              <td>{planet.name}</td>
+              <td>{planet.rotation_period}</td>
+              <td>{planet.orbital_period}</td>
+              <td>{planet.diameter}</td>
+              <td>{planet.climate}</td>
+              <td>{planet.gravity}</td>
+              <td>{planet.terrain}</td>
+              <td>{planet.surface_water}</td>
+              <td>{planet.population}</td>
+              <td>{planet.films}</td>
+              <td>{planet.created}</td>
+              <td>{planet.edited}</td>
+              <td>{planet.url}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

@@ -6,10 +6,11 @@ export type PlanetType = {
   climate: string,
   gravity: string,
   terrain: string,
+  residents?: string[]
   surface_water: string,
   population: string,
-  films: string,
+  films: string[],
   created: string,
   edited: string,
-  url: string,
+  url: string
 };
