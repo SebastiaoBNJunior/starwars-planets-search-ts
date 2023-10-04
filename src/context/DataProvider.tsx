@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import DataContext from './DataContext';
 import { PlanetType } from '../types';
-import { fetchApiData } from '../api/planetsApi';
+import fetchApiData from '../api/planetsApi';
 
 type DataProviderProps = {
   children: React.ReactNode;
@@ -9,20 +9,6 @@ type DataProviderProps = {
 
 function DataProvider({ children }: DataProviderProps) {
   const [data, setData] = useState<PlanetType[]>([]);
-
-  //   useEffect(() => {
-  //     async function getData() {
-  //       const response = await fetchApiData();
-  //       const { results } = response;
-  //       console.log(results);
-
-  //       setData(response.map((planet: PlanetType) => {
-  //         delete planet.residents;
-  //         return planet;
-  //       }));
-  //     }
-  //     getData();
-  //   }, []);
 
   useEffect(() => {
     const getData = async () => {
