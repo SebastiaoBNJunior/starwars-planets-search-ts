@@ -14,3 +14,10 @@ export type PlanetType = {
   edited: string,
   url: string
 };
+
+export type FormInitialType = {
+  column: 'population' | 'orbital_period' |
+  'diameter' | 'rotation_period' | 'surface_water',
+  operador: string,
+  valueFilter: number,
+};

@@ -1,9 +1,10 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import DataContext from '../context/DataContext';
 import { PlanetType } from '../types';
+import Filters from './Filters';
 
 export default function Table() {
-  const { data, filteredData, handleChange, value } = useContext(DataContext);
+  const { data, filteredData, handleChange, inputValue } = useContext(DataContext);
 
   return (
     <div>
@@ -11,9 +12,10 @@ export default function Table() {
         data-testid="name-filter"
         type="text"
         placeholder="Search"
-        value={ value }
+        value={ inputValue }
         onChange={ handleChange }
       />
+      <Filters />
       <table>
         <thead>
           <tr>
