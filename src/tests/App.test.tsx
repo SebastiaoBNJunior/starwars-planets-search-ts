@@ -1,44 +1,141 @@
-import { render, screen } from '@testing-library/react';
-import App from '../App';
+import { act, render, screen } from '@testing-library/react';
+import PlanetsProvider from '../context/DataProvider';
 import userEvent from '@testing-library/user-event';
-import DataProvider from '../context/DataProvider';
+import App from '../App';
 import {vi} from 'vitest';
-import mockFetchApi from '../mock/MockFetchApi';
+import testData from './testData';
 
-beforeEach(() => {
-  vi.spyOn(global, 'fetch').mockImplementation(mockFetchApi as any);
-})
-afterEach(() => {
-  vi.restoreAllMocks();
-});
-describe ('Todos os testes', () => {
 
-test('I am your test', () => {
-  render(
-  <DataProvider>
-    <App />
-  </DataProvider>);
-  const input = screen.getByRole('textbox');
-  const spinbutton = screen.getByRole('spinbutton');
-  const buttonFilter = screen.getByRole('button', {
-    name: /filtrar/i
-  })
-  const inputRadioASC = screen.getByText(/ascendente/i);
-  const inputRadioDESC = screen.getByText(/descendente/i);
-  const buttonOrder = screen.getByRole('button', {
-    name: /ordenar/i
+describe('Teste completo do projeto',  () => {
+  beforeEach(() => {
+    vi.spyOn(global, 'fetch').mockResolvedValue(
+      {
+        json: async () => testData,
+      } as Response)
   });
-  expect(input).toBeInTheDocument();
-  expect(spinbutton).toBeInTheDocument();
-  expect(buttonFilter).toBeInTheDocument();
-  expect(inputRadioASC).toBeInTheDocument();
-  expect(inputRadioDESC).toBeInTheDocument();
-  expect(buttonOrder).toBeInTheDocument();
-  userEvent.type(input, 'tato');
-  userEvent.type(spinbutton, '10000');
-  userEvent.click(buttonFilter);
-  userEvent.click(inputRadioASC);
-  userEvent.click(buttonOrder);
-});
 
-})
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test('Verificando se o componente APP é renderizado da forma correta', async () => {
+    render(
+    <PlanetsProvider>
+      <App />
+    </PlanetsProvider>);
+    const inputNameFIlter = screen.getByTestId(/name-filter/i);
+    const columnFilter = screen.getByTestId(/column-filter/i);
+    const comparisonFilter = screen.getByTestId(/comparison-filter/i);
+    const inputFilter = screen.getByTestId(/value-filter/i);
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const table = await screen.findByRole('table');
+
+    expect(inputNameFIlter).toBeInTheDocument();
+    expect(columnFilter).toBeInTheDocument();
+    expect(comparisonFilter).toBeInTheDocument();
+    expect(inputFilter).toBeInTheDocument();
+    expect(table.querySelectorAll('tr')).toHaveLength(11)
+  });
+
+  test('Verificando filtro por texto', async () => {
+    render(
+    <PlanetsProvider>
+      <App />
+    </PlanetsProvider>);
+    const inputNameFIlter = screen.getByTestId(/name-filter/i);
+    await act(async () => {
+      userEvent.type(inputNameFIlter, 'oo');
+    })
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const table = await screen.findByRole('table');
+    expect(table.querySelectorAll('tr')).toHaveLength(3)
+  });
+
+  test('Verificando filtro maior que', async () => {
+    render(
+    <PlanetsProvider>
+      <App />
+    </PlanetsProvider>);
+    const inputFilter = screen.getByTestId(/value-filter/i);
+    const buttonFilter = screen.getByTestId(/button-filter/i);
+
+    await act(async () => {
+      userEvent.type(inputFilter, '200000');
+      userEvent.click(buttonFilter);
+    })
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const table = await screen.findByRole('table');
+    expect(table.querySelectorAll('tr')).toHaveLength(7)
+  });
+
+  test('Verificando filtro menor que', async () => {
+    render(
+    <PlanetsProvider>
+      <App />
+    </PlanetsProvider>);
+    const inputFilter = screen.getByTestId(/value-filter/i);
+    const comparisonFilter = screen.getByTestId(/comparison-filter/i);
+    const buttonFilter = screen.getByTestId(/button-filter/i);
+
+    await act(async () => {
+      userEvent.type(inputFilter, '200000');
+      userEvent.selectOptions(comparisonFilter, 'menor que');
+      userEvent.click(buttonFilter);
+    })
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const table = await screen.findByRole('table');
+    expect(table.querySelectorAll('tr')).toHaveLength(2)
+  });
+
+  test('Verificando filtro igual a', async () => {
+    render(
+    <PlanetsProvider>
+      <App />
+    </PlanetsProvider>);
+    const inputFilter = screen.getByTestId(/value-filter/i);
+    const comparisonFilter = screen.getByTestId(/comparison-filter/i);
+    const buttonFilter = screen.getByTestId(/button-filter/i);
+
+    await act(async () => {
+      userEvent.type(inputFilter, '200000');
+      userEvent.selectOptions(comparisonFilter, 'igual a');
+      userEvent.click(buttonFilter);
+    })
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const table = await screen.findByRole('table');
+    expect(table.querySelectorAll('tr')).toHaveLength(2)
+  });
+
+  test('Verificando filtro igual a', async () => {
+    render(
+    <PlanetsProvider>
+      <App />
+    </PlanetsProvider>);
+    const inputFilter = screen.getByTestId(/value-filter/i);
+    const columnFilter = screen.getByTestId(/column-filter/i);
+    const comparisonFilter = screen.getByTestId(/comparison-filter/i);
+    const buttonFilter = screen.getByTestId(/button-filter/i);
+
+    await act(async () => {
+      userEvent.type(inputFilter, '8900');
+      userEvent.selectOptions(columnFilter, 'diameter');
+      userEvent.selectOptions(comparisonFilter, 'maior que');
+      userEvent.click(buttonFilter);
+    })
+    await act(async () => {
+      userEvent.type(inputFilter, '100000');
+      userEvent.selectOptions(columnFilter, 'population');
+      userEvent.selectOptions(comparisonFilter, 'menor que');
+      userEvent.click(buttonFilter);
+    })
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const filtesEl = screen.getAllByTestId('filter');
+    console.log(filtesEl.length);
+    expect(filtesEl).toHaveLength(2);
+    await act(async () => {
+      userEvent.click(filtesEl[0].querySelector('button')!);
+    })
+    const filtesEl2 = screen.getAllByTestId('filter');
+    expect(filtesEl2).toHaveLength(1);
+  });
+});
