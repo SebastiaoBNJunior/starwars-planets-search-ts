@@ -1,8 +1,9 @@
 import { createContext } from 'react';
-import { PlanetType } from '../types';
+import { TypePlanets } from '../types';
 
 type TypeDataContext = {
-  data: PlanetType[];
+  data: TypePlanets[];
+  filteredData: TypePlanets[];
   handleChange: (event:
   React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
   inputValue: string;
@@ -13,9 +14,20 @@ type TypeDataContext = {
     valueFilter: number;
   }
   newValuesProps: string[];
+  ordenation: {
+    order: {
+      column: 'population' | 'orbital_period'
+      | 'diameter' | 'rotation_period' | 'surface_water';
+      sort: 'ASC' | 'DESC';
+    }
+  }
+  filtredOrder: () => void;
+  handleOrder: (event: React.ChangeEvent<
+  HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void
   handleSubmit: () => void;
   handleSelect: (event: React.ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+
 };
 
 const DataContext = createContext({} as TypeDataContext);

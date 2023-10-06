@@ -1,9 +1,9 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import DataContext from '../context/DataContext';
-import { PlanetType } from '../types';
+import { TypePlanets } from '../types';
 
-export default function Table() {
-  const { data, filterData } = useContext(DataContext);
+function Table() {
+  const { data, filteredData } = useContext(DataContext);
 
   return (
     <table>
@@ -24,9 +24,9 @@ export default function Table() {
           <th>URL</th>
         </tr>
         <tbody>
-          {filterData.length > 0 ? filterData.map((planet: PlanetType, index) => (
+          {filteredData.length > 0 ? filteredData.map((planet: TypePlanets, index) => (
             <tr key={ index }>
-              <td>{planet.name}</td>
+              <td data-testid="planet-name">{planet.name}</td>
               <td>{planet.rotation_period}</td>
               <td>{planet.orbital_period}</td>
               <td>{planet.diameter}</td>
@@ -40,9 +40,9 @@ export default function Table() {
               <td>{planet.edited}</td>
               <td>{planet.url}</td>
             </tr>
-          )) : data.map((planet: PlanetType, index) => (
+          )) : data.map((planet: TypePlanets, index) => (
             <tr key={ index }>
-              <td>{planet.name}</td>
+              <td data-testid="planet-name">{planet.name}</td>
               <td>{planet.rotation_period}</td>
               <td>{planet.orbital_period}</td>
               <td>{planet.diameter}</td>
@@ -62,3 +62,5 @@ export default function Table() {
     </table>
   );
 }
+
+export default Table;

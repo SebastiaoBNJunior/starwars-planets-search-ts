@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
-import Home from './pages/Home';
+import Table from './components/Table';
+import FilterNumerics from './components/Filters';
 
 function App() {
   return (
-    <div>
-      <Home />
-    </div>
+    <>
+      <FilterNumerics />
+      <Table />
+    </>
   );
 }
 
