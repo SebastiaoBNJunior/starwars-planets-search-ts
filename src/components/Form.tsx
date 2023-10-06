@@ -11,9 +11,9 @@ const INITIAL_FILTER_VALUES = {
 function Form() {
   const [inputFilter, setInputFilter] = useState('');
   const [filterValues, setFilterValues] = useState(INITIAL_FILTER_VALUES);
-  const [numericFilterList, setNumericFilterList] = useState<FilterType[]>([]);
+  const [listNumericFilter, setListNumericFilter] = useState<FilterType[]>([]);
 
-  const columnFilterOptions = ['population', 'orbital_period',
+  const optionsColumFilter = ['population', 'orbital_period',
     'diameter', 'rotation_period', 'surface_water'];
 
   const comparison = ['maior que', 'menor que', 'igual a'];
@@ -34,43 +34,43 @@ function Form() {
   };
 
   const columnFilter = () => {
-    if (numericFilterList.length === 0) return columnFilterOptions;
+    if (listNumericFilter.length === 0) return optionsColumFilter;
 
-    return columnFilterOptions.filter((option) => (numericFilterList
+    return optionsColumFilter.filter((option) => (listNumericFilter
       .some((filter) => filter.columnFilter !== option)));
   };
 
   const handleFilterClick = () => {
-    const hasFilter = numericFilterList.some((filter) => (
+    const hasFilter = listNumericFilter.some((filter) => (
       filter.columnFilter === filterValues.columnFilter
     ));
 
     if (!hasFilter) {
-      setNumericFilterList((prev) => [...prev, filterValues]);
+      setListNumericFilter((prev) => [...prev, filterValues]);
     }
   };
 
   const handleRemoveFilter = (column: string) => {
-    setNumericFilterList((prev) => prev
+    setListNumericFilter((prev) => prev
       .filter((filter) => filter.columnFilter !== column));
   };
 
   const selectFistOption = useCallback(() => {
-    if (numericFilterList.length === 0) {
+    if (listNumericFilter.length === 0) {
       setFilterValues((prev) => ({
         ...prev,
-        columnFilter: columnFilterOptions[0],
+        columnFilter: optionsColumFilter[0],
       }));
       return;
     }
 
-    const column = columnFilterOptions.filter((option) => (numericFilterList
+    const column = optionsColumFilter.filter((option) => (listNumericFilter
       .some((filter) => filter.columnFilter !== option)))[0];
     setFilterValues((prev) => ({
       ...prev,
       columnFilter: column,
     }));
-  }, [numericFilterList]);
+  }, [listNumericFilter]);
 
   useEffect(() => {
     selectFistOption();
@@ -135,7 +135,7 @@ function Form() {
       </section>
       <section>
         <ul>
-          {numericFilterList.map((filter) => (
+          {listNumericFilter.map((filter) => (
             <li key={ filter.columnFilter } data-testid="filter">
               {`${filter.columnFilter} ${filter.comparisonFilter} ${filter.valueFilter}`}
               <button onClick={ () => handleRemoveFilter(filter.columnFilter) }>X</button>
@@ -143,14 +143,14 @@ function Form() {
           ))}
           <button
             data-testid="button-remove-filters"
-            onClick={ () => setNumericFilterList([]) }
+            onClick={ () => setListNumericFilter([]) }
           >
             Remover todas filtragens
 
           </button>
         </ul>
       </section>
-      <Table inputFilter={ inputFilter } numericFilterList={ numericFilterList } />
+      <Table inputFilter={ inputFilter } listNumericFilter={ listNumericFilter } />
     </div>
   );
 }

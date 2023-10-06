@@ -4,13 +4,13 @@ import { FilterType, PlanetType } from '../types';
 
     type TableProps = {
       inputFilter: string;
-      numericFilterList: FilterType[];
+      listNumericFilter: FilterType[];
     };
 
 function Table(props: TableProps) {
   const { PlanetsInfo } = useContext(PlanetContext);
   const [filtered, setFiltered] = useState<PlanetType[]>([]);
-  const { inputFilter, numericFilterList } = props;
+  const { inputFilter, listNumericFilter } = props;
 
   useEffect(() => {
     setFiltered(PlanetsInfo);
@@ -18,8 +18,8 @@ function Table(props: TableProps) {
       setFiltered(PlanetsInfo.filter((planet) => planet.name.includes(inputFilter)));
     }
 
-    if (numericFilterList!.length > 0) {
-      numericFilterList.forEach((filter) => {
+    if (listNumericFilter!.length > 0) {
+      listNumericFilter.forEach((filter) => {
         const { columnFilter, comparisonFilter, valueFilter } = filter;
         const valueFilterNumber = Number(valueFilter);
         switch (comparisonFilter) {
@@ -40,7 +40,7 @@ function Table(props: TableProps) {
         }
       });
     }
-  }, [inputFilter, PlanetsInfo, numericFilterList]);
+  }, [inputFilter, PlanetsInfo, listNumericFilter]);
 
   return (
     <table>

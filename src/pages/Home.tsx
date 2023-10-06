@@ -1,11 +1,9 @@
-// import Filters from '../components/Filters';
-// import Table from '../components/Table';
+import Form from '../components/Form';
 
-// export default function Home() {
-//   return (
-//     <div>
-//       <Filters />
-//       <Table />
-//     </div>
-//   );
-// }
+export default function Home() {
+  return (
+    <div>
+      <Form />
+    </div>
+  );
+}
