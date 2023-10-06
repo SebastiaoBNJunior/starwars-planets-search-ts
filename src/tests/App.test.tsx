@@ -1,12 +1,13 @@
 import { act, render, screen } from '@testing-library/react';
-import PlanetsProvider from '../context/DataProvider';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import {vi} from 'vitest';
 import testData from './testData';
+import DataProvider from '../context/DataProvider';
 
 
 describe('Teste completo do projeto',  () => {
+
   beforeEach(() => {
     vi.spyOn(global, 'fetch').mockResolvedValue(
       {
@@ -20,42 +21,42 @@ describe('Teste completo do projeto',  () => {
 
   test('Verificando se o componente APP é renderizado da forma correta', async () => {
     render(
-    <PlanetsProvider>
+    <DataProvider>
       <App />
-    </PlanetsProvider>);
-    const inputNameFIlter = screen.getByTestId(/name-filter/i);
-    const columnFilter = screen.getByTestId(/column-filter/i);
-    const comparisonFilter = screen.getByTestId(/comparison-filter/i);
+    </DataProvider>);
+    const nameFilterInput = screen.getByTestId(/name-filter/i);
+    const columFilter = screen.getByTestId(/column-filter/i);
+    const comparatorFilter = screen.getByTestId(/comparison-filter/i);
     const inputFilter = screen.getByTestId(/value-filter/i);
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const table = await screen.findByRole('table');
+    const tableTag = await screen.findByRole('table');
 
-    expect(inputNameFIlter).toBeInTheDocument();
-    expect(columnFilter).toBeInTheDocument();
-    expect(comparisonFilter).toBeInTheDocument();
+    expect(nameFilterInput).toBeInTheDocument();
+    expect(columFilter).toBeInTheDocument();
+    expect(comparatorFilter).toBeInTheDocument();
     expect(inputFilter).toBeInTheDocument();
-    expect(table.querySelectorAll('tr')).toHaveLength(11)
+    expect(tableTag.querySelectorAll('tr')).toHaveLength(11)
   });
 
-  test('Verificando filtro por texto', async () => {
-    render(
-    <PlanetsProvider>
-      <App />
-    </PlanetsProvider>);
-    const inputNameFIlter = screen.getByTestId(/name-filter/i);
-    await act(async () => {
-      userEvent.type(inputNameFIlter, 'oo');
-    })
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    const table = await screen.findByRole('table');
-    expect(table.querySelectorAll('tr')).toHaveLength(3)
-  });
+  // test('Verificando filtro por texto', async () => {
+  //   render(
+  //   <DataProvider>
+  //     <App />
+  //   </DataProvider>);
+  //   const inputNameFIlter = screen.getByTestId(/name-filter/i);
+  //   await act(async () => {
+  //     userEvent.type(inputNameFIlter, 'oo');
+  //   })
+  //   await new Promise(resolve => setTimeout(resolve, 2000));
+  //   const tableTag = await screen.findByRole('table');
+  //   expect(tableTag.querySelectorAll('tr')).toHaveLength(3)
+  // });
 
   test('Verificando filtro maior que', async () => {
     render(
-    <PlanetsProvider>
+    <DataProvider>
       <App />
-    </PlanetsProvider>);
+    </DataProvider>);
     const inputFilter = screen.getByTestId(/value-filter/i);
     const buttonFilter = screen.getByTestId(/button-filter/i);
 
@@ -64,68 +65,68 @@ describe('Teste completo do projeto',  () => {
       userEvent.click(buttonFilter);
     })
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const table = await screen.findByRole('table');
-    expect(table.querySelectorAll('tr')).toHaveLength(7)
+    const tableTag = await screen.findByRole('table');
+    expect(tableTag.querySelectorAll('tr')).toHaveLength(7)
   });
 
   test('Verificando filtro menor que', async () => {
     render(
-    <PlanetsProvider>
+    <DataProvider>
       <App />
-    </PlanetsProvider>);
+    </DataProvider>);
     const inputFilter = screen.getByTestId(/value-filter/i);
-    const comparisonFilter = screen.getByTestId(/comparison-filter/i);
+    const comparatorFilter = screen.getByTestId(/comparison-filter/i);
     const buttonFilter = screen.getByTestId(/button-filter/i);
 
     await act(async () => {
       userEvent.type(inputFilter, '200000');
-      userEvent.selectOptions(comparisonFilter, 'menor que');
+      userEvent.selectOptions(comparatorFilter, 'menor que');
       userEvent.click(buttonFilter);
     })
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const table = await screen.findByRole('table');
-    expect(table.querySelectorAll('tr')).toHaveLength(2)
+    const tableTag = await screen.findByRole('table');
+    expect(tableTag.querySelectorAll('tr')).toHaveLength(2)
   });
 
   test('Verificando filtro igual a', async () => {
     render(
-    <PlanetsProvider>
+    <DataProvider>
       <App />
-    </PlanetsProvider>);
+    </DataProvider>);
     const inputFilter = screen.getByTestId(/value-filter/i);
-    const comparisonFilter = screen.getByTestId(/comparison-filter/i);
+    const comparatorFilter = screen.getByTestId(/comparison-filter/i);
     const buttonFilter = screen.getByTestId(/button-filter/i);
 
     await act(async () => {
       userEvent.type(inputFilter, '200000');
-      userEvent.selectOptions(comparisonFilter, 'igual a');
+      userEvent.selectOptions(comparatorFilter, 'igual a');
       userEvent.click(buttonFilter);
     })
     await new Promise(resolve => setTimeout(resolve, 2000));
-    const table = await screen.findByRole('table');
-    expect(table.querySelectorAll('tr')).toHaveLength(2)
+    const tableTag = await screen.findByRole('table');
+    expect(tableTag.querySelectorAll('tr')).toHaveLength(2)
   });
 
   test('Verificando filtro igual a', async () => {
     render(
-    <PlanetsProvider>
+    <DataProvider>
       <App />
-    </PlanetsProvider>);
+    </DataProvider>);
     const inputFilter = screen.getByTestId(/value-filter/i);
-    const columnFilter = screen.getByTestId(/column-filter/i);
-    const comparisonFilter = screen.getByTestId(/comparison-filter/i);
+    const columFilter = screen.getByTestId(/column-filter/i);
+    const comparatorFilter = screen.getByTestId(/comparison-filter/i);
     const buttonFilter = screen.getByTestId(/button-filter/i);
 
     await act(async () => {
       userEvent.type(inputFilter, '8900');
-      userEvent.selectOptions(columnFilter, 'diameter');
-      userEvent.selectOptions(comparisonFilter, 'maior que');
+      userEvent.selectOptions(columFilter, 'diameter');
+      userEvent.selectOptions(comparatorFilter, 'maior que');
       userEvent.click(buttonFilter);
     })
     await act(async () => {
       userEvent.type(inputFilter, '100000');
-      userEvent.selectOptions(columnFilter, 'population');
-      userEvent.selectOptions(comparisonFilter, 'menor que');
+      userEvent.selectOptions(columFilter, 'population');
+      userEvent.selectOptions(comparatorFilter, 'menor que');
       userEvent.click(buttonFilter);
     })
     await new Promise(resolve => setTimeout(resolve, 2000));

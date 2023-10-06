@@ -3,11 +3,11 @@ import { fetchPlanetsApi } from '../api/planetsApi';
 import PlanetContext from './DataContext';
 import { PlanetType } from '../types';
 
-// type PlanetsProviderProps = {
+type PlanetsProviderProps = {
   children: React.ReactNode;
 };
 
-export default function PlanetsProvider({ children } : PlanetsProviderProps) {
+export default function DataProvider({ children } : PlanetsProviderProps) {
   const [infoPlanet, setInfoPlanet] = useState<PlanetType[]>([]);
 
   useEffect(() => {

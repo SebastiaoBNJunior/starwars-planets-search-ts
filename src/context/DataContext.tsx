@@ -5,6 +5,6 @@ type ContextPlanetType = {
   PlanetsInfo: PlanetType[];
 };
 
-const PlanetContext = createContext({} as ContextPlanetType);
+const DataContext = createContext({} as ContextPlanetType);
 
-export default PlanetContext;
+export default DataContext;
