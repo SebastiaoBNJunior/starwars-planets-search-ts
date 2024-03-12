@@ -10,6 +10,14 @@ Upon receiving data from the API, I utilized it to create an interactive table e
 
 Furthermore, as part of the development process, I created unit and integration tests using the React Testing Library, ensuring the robustness and reliability of the system.
 
+## 👨‍💻 Language and Technologies used
+
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+
 <details>
   <summary><strong>🏗 Project structure</strong></summary><br />
 
