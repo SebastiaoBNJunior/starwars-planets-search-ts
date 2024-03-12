@@ -81,8 +81,6 @@ _Give me feedbacks, I'm open to new ideas_ 😉
 
 </details>
 
-![image](starship.gif)
-
 <div align="center">
   <img src="starship.gif" alt="Starship">
 </div>
